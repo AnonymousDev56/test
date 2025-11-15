@@ -20,6 +20,5 @@ jobs:
       - name: Запустить main.py
         run: python main.py
 
-      - name: Запустить main.py
-        run: | 
-          python -m py_compile main.py
+      - name: Проверить код
+        run: python -m py_compile main.py
