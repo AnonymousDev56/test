@@ -20,8 +20,8 @@ jobs:
 
       - name: Сборка Docker образа
         run: |
-          docker build -t anonymousev56/test:latest .
+          docker build -t anonymousdev56/test:latest .
 
       - name: Push Docker образа в Docker Hub
         run: |
-          docker push anonymousev56/test:latest
+          docker push anonymousdev56/test:latest 
