@@ -1,33 +1,27 @@
-name: Python CI
+name: CI/CD Docker
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  run-python:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
       - name: Скачать репозиторий
         uses: actions/checkout@v3
 
-      - name: Установить Python
-        uses: actions/setup-python@v4
+      - name: Логин в Docker Hub
+        uses: docker/login-action@v3
         with:
-          python-version: "3.10"
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Запустить main.py
-        run: python main.py
+      - name: Сборка Docker образа
+        run: |
+          docker build -t anonymousev56/test:latest .
 
-      - name: Проверить код
-        run: python -m py_compile main.py
-
-      - name: Копировать файл в виртуалку
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: "192.168.49.1"
-          username: "vbox"
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "main.py"
-          target: "/home/vbox/deploy_test/"
+      - name: Push Docker образа в Docker Hub
+        run: |
+          docker push anonymousev56/test:latest
